@@ -1,6 +1,4 @@
-use either::Either;
 use itertools::{multipeek, MultiPeek};
-use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthStr;
 
 use buffer::Buffer;
@@ -116,16 +114,7 @@ where
         self.background(&text_area, buf, self.style.bg);
 
         let style = self.style;
-        let styled = self.text.by_ref().flat_map(|t| match *t {
-            Text::Raw(ref d) => {
-                let data: &'t str = d; // coerce to &str
-                Either::Left(UnicodeSegmentation::graphemes(data, true).map(|g| (g, style)))
-            }
-            Text::Styled(ref d, s) => {
-                let data: &'t str = d; // coerce to &str
-                Either::Right(UnicodeSegmentation::graphemes(data, true).map(move |g| (g, s)))
-            }
-        });
+        let styled = self.text.by_ref().flat_map(|t| t.styled_graphemes(style));
         let mut styled = multipeek(styled);
 
         fn get_cur_line_len<'a, I: Iterator<Item = (&'a str, Style)>>(

@@ -40,6 +40,6 @@ fn gauge_render() {
         "  └──────────────────────────────────┘  ",
         "                                        ",
         "                                        ",
-    ]);
+    ].as_ref());
     assert_eq!(&expected, terminal.backend().buffer());
 }

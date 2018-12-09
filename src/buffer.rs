@@ -157,7 +157,7 @@ impl Buffer {
     }
 
     /// Returns a Buffer containing the given lines
-    pub fn with_lines<S>(lines: Vec<S>) -> Buffer
+    pub fn with_lines<S>(lines: &[S]) -> Buffer
     where
         S: AsRef<str>,
     {
@@ -171,10 +171,8 @@ impl Buffer {
             width,
             height,
         });
-        let mut y = 0;
-        for line in &lines {
-            buffer.set_string(0, y, line, Style::default());
-            y += 1;
+        for (y, line) in lines.iter().enumerate() {
+            buffer.set_string(0, y as u16, line, Style::default());
         }
         buffer
     }

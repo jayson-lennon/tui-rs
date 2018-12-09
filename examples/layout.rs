@@ -21,7 +21,10 @@ use tui::Terminal;
 use util::event::{Event, Events};
 
 fn main() -> Result<(), failure::Error> {
-    stderrlog::new().verbosity(4).init()?;
+    stderrlog::new()
+        .module(module_path!())
+        .verbosity(4)
+        .init()?;
 
     // Terminal initialization
     let stdout = io::stdout().into_raw_mode()?;
@@ -48,7 +51,7 @@ fn main() -> Result<(), failure::Error> {
                 .split(f.size());
 
             Block::default()
-                .title("Block")
+                .title("Block 1")
                 .borders(Borders::ALL)
                 .render(&mut f, chunks[0]);
             Block::default()
